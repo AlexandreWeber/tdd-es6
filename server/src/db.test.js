@@ -1,38 +1,29 @@
-import { MongoClient } from 'mongodb';
 import { expect } from 'chai';
 import { getUserByUsername } from './db';
+import { getDatabaseData, setDatabaseData, resetDatabase } from './test-helpers';
 
 describe('getUserByUsername', () => {
 
-	it('get the correct user from the database given a username', async () => {
-		const client = await MongoClient.connect(
-			'mongodb://localhost:27017/TEST_DB',
-			{
-				useNewUrlParser: true,
-				useUnifiedTopology: true
-			}
-		);
+	afterEach('reset database', async () => {
+		await resetDatabase();
+	});
 
-		const db = client.db('TEST_DB');
-		
+	it('get the correct user from the database given a username', async () => {
+	
 		const fakeData = [
 			{ id: '123', username: 'abc', email: 'abc@gmail.com'},
 			{ id: '124', username: 'wrong', email: 'wrong@gmail.com'},
 		];
 
-		await db.collection('users').insertMany(fakeData);
+		await setDatabaseData('users', fakeData);
 
 		const actual = await getUserByUsername('abc');
-		const finalDBState = await db.collection('users').find().toArray();
-
-		await db.dropDatabase();
+		const finalDBState = await getDatabaseData('users');
 
 		const expected = { id: '123', username: 'abc', email: 'abc@gmail.com'};
 
 		expect(actual).excludingEvery('_id').to.deep.equal(expected);
 		expect(finalDBState).excludingEvery('_id').to.deep.equal(fakeData);
-
-		client.close();
 	});
 
 });
