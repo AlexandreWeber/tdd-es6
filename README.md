@@ -1,4 +1,4 @@
-# LinkedIn Learning course [JavaScript: Test-Driven Development (ES6)](https://www.linkedin.com/learning/javascript-test-driven-development-es6)
+# [JavaScript: Test-Driven Development (ES6)](https://www.linkedin.com/learning/javascript-test-driven-development-es6)
 
 ### **Course details**
 
