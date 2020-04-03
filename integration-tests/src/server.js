@@ -5,9 +5,18 @@ const app = express();
 
 app.get('/users/:username', async (req, res) => {
 	const { username } = req.params;
-	const user = await db.getUserByUsername(username);
 
-	return res.json(user);
+	try {
+		const user = await db.getUserByUsername(username);
+		
+		if (user) {
+			return res.json(user);
+		} else {
+			return res.status(404).send();
+		}
+	} catch (e) {
+		return res.status(500).json(e);
+	}
 });
 
 export { app };
