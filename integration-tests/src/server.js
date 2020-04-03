@@ -10,12 +10,12 @@ app.get('/users/:username', async (req, res) => {
 		const user = await db.getUserByUsername(username);
 		
 		if (user) {
-			return res.json(user);
+			res.json(user);
 		} else {
-			return res.status(404).send();
+			res.status(404).send();
 		}
 	} catch (e) {
-		return res.status(500).json(e);
+		res.status(500).json(e);
 	}
 });
 
